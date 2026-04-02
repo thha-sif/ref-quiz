@@ -74,22 +74,41 @@ document.addEventListener('DOMContentLoaded', async () => {
     const MAX_STREAK_KEY = 'refquiz_maxStreak';
 
     const ALL_ACHIEVEMENTS = [
-        { name: 'Nybörjardomare 👶', criteria: 'Uppnå 100 poäng', category: 'Poäng', threshold: 100 },
-        { name: 'Diplomerad domare ✅', criteria: 'Uppnå 250 poäng', category: 'Poäng', threshold: 250 },
-        { name: 'Erfaren domare ⬆️', criteria: 'Uppnå 500 poäng', category: 'Poäng', threshold: 500 },
-        { name: 'Linjedomare 🚩', criteria: 'Uppnå 750 poäng', category: 'Poäng', threshold: 750 },
-        { name: 'Assisterande domare 🤝', criteria: 'Uppnå 1000 poäng', category: 'Poäng', threshold: 1000 },
-        { name: 'Huvuddomare 🧑‍⚖️', criteria: 'Uppnå 1500 poäng', category: 'Poäng', threshold: 1500 },
-        { name: 'UEFA-domare 🌍', criteria: 'Uppnå 2500 poäng', category: 'Poäng', threshold: 2500 },
-        { name: 'FIFA-domare 🏆', criteria: 'Uppnå 5000 poäng', category: 'Poäng', threshold: 5000 },
-        { name: 'Stabil 🛡️', criteria: 'Uppnå 10 i streak', category: 'Streak', threshold: 10 },
-        { name: 'Pålitlig ⚖️', criteria: 'Uppnå 25 i streak', category: 'Streak', threshold: 25 },
-        { name: 'Ofelbar 🧠', criteria: 'Uppnå 50 i streak', category: 'Streak', threshold: 50 },
-        { name: 'Legendarisk 👑', criteria: 'Uppnå 100 i streak', category: 'Streak', threshold: 100 }
+        { name: 'Nybörjardomare', criteria: 'Uppnå 100 poäng', category: 'Poäng', threshold: 100 },
+        { name: 'Diplomerad domare', criteria: 'Uppnå 250 poäng', category: 'Poäng', threshold: 250 },
+        { name: 'Erfaren domare', criteria: 'Uppnå 500 poäng', category: 'Poäng', threshold: 500 },
+        { name: 'Linjedomare', criteria: 'Uppnå 750 poäng', category: 'Poäng', threshold: 750 },
+        { name: 'Assisterande domare', criteria: 'Uppnå 1000 poäng', category: 'Poäng', threshold: 1000 },
+        { name: 'Huvuddomare', criteria: 'Uppnå 1500 poäng', category: 'Poäng', threshold: 1500 },
+        { name: 'UEFA-domare', criteria: 'Uppnå 2500 poäng', category: 'Poäng', threshold: 2500 },
+        { name: 'FIFA-domare', criteria: 'Uppnå 5000 poäng', category: 'Poäng', threshold: 5000 },
+        { name: 'Stabil', criteria: 'Uppnå 10 i streak', category: 'Streak', threshold: 10 },
+        { name: 'Pålitlig', criteria: 'Uppnå 25 i streak', category: 'Streak', threshold: 25 },
+        { name: 'Ofelbar', criteria: 'Uppnå 50 i streak', category: 'Streak', threshold: 50 },
+        { name: 'Legendarisk', criteria: 'Uppnå 100 i streak', category: 'Streak', threshold: 100 }
     ];
     const SCORE_ACHIEVEMENTS = ALL_ACHIEVEMENTS
         .filter(achievement => achievement.category === 'Poäng')
         .sort((firstAchievement, secondAchievement) => firstAchievement.threshold - secondAchievement.threshold);
+    const STREAK_ACHIEVEMENTS = ALL_ACHIEVEMENTS
+        .filter(achievement => achievement.category === 'Streak')
+        .sort((firstAchievement, secondAchievement) => firstAchievement.threshold - secondAchievement.threshold);
+
+    function getAchievementImageSrc(achievement) {
+        if (!achievement) return '';
+
+        const collection = achievement.category === 'Poäng'
+            ? SCORE_ACHIEVEMENTS
+            : achievement.category === 'Streak'
+                ? STREAK_ACHIEVEMENTS
+                : [];
+        const index = collection.findIndex(candidate => candidate.name === achievement.name);
+
+        if (index < 0) return '';
+
+        const prefix = achievement.category === 'Poäng' ? 'level' : 'streak';
+        return `images/achievements/${prefix}${index + 1}.png`;
+    }
 
     function formatRulesLabel(rules) {
         const labels = {
@@ -368,16 +387,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                 nameDiv.className = 'achievement-name';
                 nameDiv.textContent = ach.name;
 
-                const lockDiv = document.createElement('div');
-                lockDiv.className = 'achievement-lock';
-                lockDiv.textContent = isUnlocked ? '✓ Upplåst' : '🔒 Låst';
+                const image = document.createElement('img');
+                image.className = 'achievement-image';
+                image.src = getAchievementImageSrc(ach);
+                image.alt = ach.name;
 
                 const criteriaDiv = document.createElement('div');
                 criteriaDiv.className = 'achievement-criteria';
                 criteriaDiv.textContent = ach.criteria;
 
                 item.appendChild(nameDiv);
-                item.appendChild(lockDiv);
+                item.appendChild(image);
                 item.appendChild(criteriaDiv);
                 categoryGrid.appendChild(item);
             });
@@ -514,7 +534,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             newlyUnlocked.forEach(name => {
                 const achievement = ALL_ACHIEVEMENTS.find(a => a.name === name);
                 const li = document.createElement('li');
-                li.textContent = achievement ? `${name} — ${achievement.criteria}` : name;
+
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'result-achievement-name';
+                nameDiv.textContent = achievement ? achievement.name : name;
+
+                const image = document.createElement('img');
+                image.className = 'result-achievement-image';
+                image.src = getAchievementImageSrc(achievement);
+                image.alt = achievement ? achievement.name : name;
+
+                const criteriaDiv = document.createElement('div');
+                criteriaDiv.className = 'result-achievement-criteria';
+                criteriaDiv.textContent = achievement ? achievement.criteria : '';
+
+                li.appendChild(nameDiv);
+                li.appendChild(image);
+                li.appendChild(criteriaDiv);
                 resultAchievementsAll.appendChild(li);
             });
         } else {
