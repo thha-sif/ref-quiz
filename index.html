@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz – Fotbollsregler</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header class="app-header">
+        <h1>Quiz – Fotbollsregler</h1>
+    </header>
+
+    <main class="app-main">
+        <section class="score-progress-card" aria-label="Poängprogress mot nästa framsteg">
+            <div class="score-progress-header">
+                <div>
+                    <span class="score-progress-label">Samlade poäng</span>
+                </div>
+                <span id="score-progress-current" class="score-progress-current">0 / 100 poäng</span>
+            </div>
+            <div class="pitch score-progress-pitch">
+                <img id="score-ball" class="ball" src="images/ball.png" alt="Poängboll">
+            </div>
+        </section>
+
+        <!-- Startvy -->
+        <section id="view-start" class="view active">
+
+            <div class="streak-panel" aria-label="Streakstatistik">
+                <div class="streak-card streak-card-current">
+                    <span class="streak-label">Nuvarande streak</span>
+                    <span id="current-streak-display" class="streak-value">0</span>
+                </div>
+                <div class="streak-card streak-card-best">
+                    <span class="streak-label">Bästa streak</span>
+                    <span id="best-streak-display" class="streak-value">0</span>
+                </div>
+            </div>
+            <button id="achievement-summary" class="achievement-summary-card is-empty" type="button" disabled>
+                <span class="achievement-summary-label">Framsteg</span>
+                <span id="achievement-summary-count" class="achievement-summary-count">0 / 12</span>
+                <span id="achievement-summary-status" class="achievement-summary-status">Inga framsteg upplåsta ännu.</span>
+            </button>
+
+            <div class="form-group">
+                <span>Välj en eller flera spelformer</span>
+                <div class="rules-buttons">
+                    <button type="button" data-rules="5v5" class="btn-rules active">5 mot 5</button>
+                    <button type="button" data-rules="7v7" class="btn-rules">7 mot 7</button>
+                    <button type="button" data-rules="9v9" class="btn-rules">9 mot 9</button>
+                    <button type="button" data-rules="11v11" class="btn-rules">11 mot 11</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span>Välj svårighet</span>
+                <div class="difficulty-buttons">
+                    <button type="button" data-diff="easy" class="btn-diff active">Lätt</button>
+                    <button type="button" data-diff="medium" class="btn-diff">Medel</button>
+                    <button type="button" data-diff="hard" class="btn-diff">Svår</button>
+                </div>
+            </div>
+
+            <button id="btn-start-quiz" class="btn-primary start-quiz-button" type="button">Starta quiz</button>
+        </section>
+
+        <!-- Quizvy -->
+        <section id="view-quiz" class="view">
+            <div class="quiz-status">
+                <span id="quiz-progress">Fråga 1 av 10</span>
+            </div>
+
+            <div id="quiz-question-container">
+                <h2 id="quiz-question-text"></h2>
+                <img id="quiz-question-image" alt="" class="question-image hidden">
+            </div>
+
+            <div id="quiz-answers" class="answers-container">
+                <!-- Svarsknappar genereras via JS -->
+            </div>
+
+            <div id="quiz-feedback" class="quiz-feedback hidden" aria-live="polite">
+                <button id="btn-next-question" class="btn-primary quiz-feedback-button" type="button">
+                    Nästa fråga
+                </button>
+                <p id="quiz-feedback-explanation" class="quiz-feedback-explanation"></p>
+            </div>
+        </section>
+
+        <!-- Resultatvy -->
+        <section id="view-result" class="view">
+            <h2>Resultat</h2>
+            <p id="result-summary"></p>
+
+            <div id="result-achievements" class="achievements-block hidden">
+                <h3>Framsteg</h3>
+                <p id="result-achievements-new"></p>
+                <ul id="result-achievements-all"></ul>
+            </div>
+
+            <button id="btn-restart" class="btn-primary result-restart-button" type="button">Starta nytt quiz</button>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <small>Spelregler för barn- och ungdomsfotboll i quizformat</small>
+    </footer>
+
+    <div class="debug-bar">
+        <button id="btn-debug-reset-progress" class="btn-debug" type="button">Återställ poäng och streak</button>
+    </div>
+
+    <!-- Achievement Modal -->
+    <div id="achievements-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Framsteg</h2>
+                <button id="modal-close" class="modal-close" type="button">×</button>
+            </div>
+            <div id="achievements-grid" class="achievements-grid">
+                <!-- Achievements rendered via JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/csv-loader.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
