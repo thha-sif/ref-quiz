@@ -18,12 +18,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const views = [viewStart, viewQuiz, viewResult];
 
     const rulesButtons = document.querySelectorAll('.btn-rules');
+    const rulesButtonsContainer = document.querySelector('.rules-buttons');
+    const rulesSelectionHelp = document.getElementById('rules-selection-help');
     const diffButtons = document.querySelectorAll('.btn-diff');
     const btnStartQuiz = document.getElementById('btn-start-quiz');
     const btnRestart = document.getElementById('btn-restart');
     const btnDebugResetProgress = document.getElementById('btn-debug-reset-progress');
 
     const quizProgress = document.getElementById('quiz-progress');
+    const quizStatus = document.querySelector('.quiz-status');
     const quizQuestionText = document.getElementById('quiz-question-text');
     const quizQuestionImage = document.getElementById('quiz-question-image');
     const quizAnswers = document.getElementById('quiz-answers');
@@ -56,17 +59,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentIndex = 0;
     let correctCount = 0;
     let roundScore = 0;
-    let questionStartTime = 0;
     let currentStreak = 0;
     let maxStreak = 0;
+    let strikes = 0;
+    let wasUtvisad = false;
+    let questionResolved = false;
+    let questionTimerId = null;
+    let questionTimerIntervalId = null;
     let pickedAnswers = [];
     let pickedCorrectIndex = 0;
 
     const difficultyMultiplier = {
-        'easy': 1,
-        'medium': 1.5,
-        'hard': 2
+        'easy': 0.8,
+        'medium': 1,
+        'hard': 1.5,
+        'expert': 2
     };
+
+    const EXPERT_DIFFICULTY = 'expert';
+    const EXPERT_TIME_LIMIT_SECONDS = 6;
+    const MAX_STRIKES = 3;
+    const STRIKE_TITLES = ['🤚Tillsägelse', '🟨Varning', '🟥Utvisning'];
 
     const TOTAL_SCORE_KEY = 'refquiz_totalScore';
     const ACHIEVEMENTS_KEY = 'refquiz_achievements';
@@ -77,15 +90,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         { name: 'Nybörjardomare', criteria: 'Uppnå 100 poäng', category: 'Poäng', threshold: 100 },
         { name: 'Diplomerad domare', criteria: 'Uppnå 250 poäng', category: 'Poäng', threshold: 250 },
         { name: 'Erfaren domare', criteria: 'Uppnå 500 poäng', category: 'Poäng', threshold: 500 },
-        { name: 'Linjedomare', criteria: 'Uppnå 750 poäng', category: 'Poäng', threshold: 750 },
-        { name: 'Assisterande domare', criteria: 'Uppnå 1000 poäng', category: 'Poäng', threshold: 1000 },
-        { name: 'Huvuddomare', criteria: 'Uppnå 1500 poäng', category: 'Poäng', threshold: 1500 },
-        { name: 'UEFA-domare', criteria: 'Uppnå 2500 poäng', category: 'Poäng', threshold: 2500 },
+        { name: 'Linjedomare', criteria: 'Uppnå 1000 poäng', category: 'Poäng', threshold: 1000 },
+        { name: 'Assisterande domare', criteria: 'Uppnå 1500 poäng', category: 'Poäng', threshold: 1500 },
+        { name: 'Huvuddomare', criteria: 'Uppnå 2000 poäng', category: 'Poäng', threshold: 2000 },
+        { name: 'UEFA-domare', criteria: 'Uppnå 3000 poäng', category: 'Poäng', threshold: 3000 },
         { name: 'FIFA-domare', criteria: 'Uppnå 5000 poäng', category: 'Poäng', threshold: 5000 },
         { name: 'Stabil', criteria: 'Uppnå 10 i streak', category: 'Streak', threshold: 10 },
         { name: 'Pålitlig', criteria: 'Uppnå 25 i streak', category: 'Streak', threshold: 25 },
         { name: 'Ofelbar', criteria: 'Uppnå 50 i streak', category: 'Streak', threshold: 50 },
-        { name: 'Legendarisk', criteria: 'Uppnå 100 i streak', category: 'Streak', threshold: 100 }
+        { name: 'Legendarisk', criteria: 'Uppnå 100 i streak', category: 'Streak', threshold: 100 },
+        { name: 'Nykomling', criteria: 'Få alla rätt på Lätt svårighet', category: 'Utmaning', difficulty: 'easy' },
+        { name: 'Utmanare', criteria: 'Få alla rätt på Medel svårighet', category: 'Utmaning', difficulty: 'medium' },
+        { name: 'Proffs', criteria: 'Få alla rätt på Svår svårighet', category: 'Utmaning', difficulty: 'hard' },
+        { name: 'Expert', criteria: 'Få alla rätt på Expert svårighet', category: 'Utmaning', difficulty: 'expert' }
     ];
     const SCORE_ACHIEVEMENTS = ALL_ACHIEVEMENTS
         .filter(achievement => achievement.category === 'Poäng')
@@ -93,9 +110,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     const STREAK_ACHIEVEMENTS = ALL_ACHIEVEMENTS
         .filter(achievement => achievement.category === 'Streak')
         .sort((firstAchievement, secondAchievement) => firstAchievement.threshold - secondAchievement.threshold);
+    const CHALLENGE_ACHIEVEMENTS = ALL_ACHIEVEMENTS
+        .filter(achievement => achievement.category === 'Utmaning');
+    const ACHIEVEMENT_CATEGORY_ORDER = ['Poäng', 'Streak', 'Utmaning'];
+
+    const quizStatusMeta = document.createElement('div');
+    quizStatusMeta.className = 'quiz-status-meta';
+
+    const quizTimer = document.createElement('span');
+    quizTimer.id = 'quiz-timer';
+    quizTimer.className = 'quiz-timer hidden';
+
+    const quizStrikeStatus = document.createElement('span');
+    quizStrikeStatus.id = 'quiz-strikes';
+    quizStrikeStatus.className = 'quiz-strikes hidden';
+
+    quizStatusMeta.appendChild(quizTimer);
+    quizStatusMeta.appendChild(quizStrikeStatus);
+    quizStatus.appendChild(quizStatusMeta);
 
     function getAchievementImageSrc(achievement) {
         if (!achievement) return '';
+
+        if (achievement.category === 'Utmaning') {
+            return 'images/ball.png';
+        }
 
         const collection = achievement.category === 'Poäng'
             ? SCORE_ACHIEVEMENTS
@@ -118,6 +157,103 @@ document.addEventListener('DOMContentLoaded', async () => {
             '11v11': '11 mot 11'
         };
         return labels[rules] || rules;
+    }
+
+    function isExpertMode() {
+        return selectedDifficulty === EXPERT_DIFFICULTY;
+    }
+
+    function clearQuestionTimer() {
+        if (questionTimerId !== null) {
+            clearTimeout(questionTimerId);
+            questionTimerId = null;
+        }
+
+        if (questionTimerIntervalId !== null) {
+            clearInterval(questionTimerIntervalId);
+            questionTimerIntervalId = null;
+        }
+    }
+
+    function updateTimerDisplay(secondsLeft) {
+        if (!isExpertMode()) {
+            quizTimer.classList.add('hidden');
+            quizTimer.classList.remove('is-warning');
+            return;
+        }
+
+        quizTimer.classList.remove('hidden');
+        quizTimer.textContent = `Tid: ${secondsLeft}s`;
+        quizTimer.classList.toggle('is-warning', secondsLeft <= 2);
+    }
+
+    function renderStrikeStatus() {
+        if (!isExpertMode()) {
+            quizStrikeStatus.classList.add('hidden');
+            quizStrikeStatus.textContent = '';
+            return;
+        }
+
+        const remainingChances = Math.max(0, MAX_STRIKES - strikes);
+        const lastStrike = strikes > 0
+            ? ` (${STRIKE_TITLES[Math.min(strikes - 1, STRIKE_TITLES.length - 1)]})`
+            : '';
+        quizStrikeStatus.classList.remove('hidden');
+        quizStrikeStatus.textContent = `Chanser kvar: ${remainingChances}/${MAX_STRIKES}${lastStrike}`;
+    }
+
+    function syncRulesSelectionUI() {
+        rulesButtons.forEach(button => {
+            const rules = button.dataset.rules;
+            const isActive = selectedRules.includes(rules);
+            button.classList.toggle('active', isActive);
+            button.setAttribute('aria-pressed', String(isActive));
+        });
+
+        const hasRules = selectedRules.length > 0;
+        btnStartQuiz.disabled = !hasRules;
+        btnStartQuiz.title = hasRules ? '' : 'Välj minst en spelform för att starta quiz';
+        rulesButtonsContainer.classList.toggle('is-empty', !hasRules);
+
+        if (!rulesSelectionHelp) {
+            return;
+        }
+
+        rulesSelectionHelp.classList.toggle('hidden', hasRules);
+        rulesSelectionHelp.textContent = 'Ingen spelform vald. Välj minst en för att kunna starta quiz.';
+    }
+
+    function startQuestionTimer() {
+        clearQuestionTimer();
+
+        if (!isExpertMode()) {
+            return;
+        }
+
+        let secondsLeft = EXPERT_TIME_LIMIT_SECONDS;
+        updateTimerDisplay(secondsLeft);
+
+        questionTimerIntervalId = setInterval(() => {
+            secondsLeft = Math.max(0, secondsLeft - 1);
+            updateTimerDisplay(secondsLeft);
+        }, 1000);
+
+        questionTimerId = setTimeout(() => {
+            handleAnswer(null, { timedOut: true });
+        }, EXPERT_TIME_LIMIT_SECONDS * 1000);
+    }
+
+    function addStrike() {
+        strikes = Math.min(MAX_STRIKES, strikes + 1);
+        currentStreak = 0;
+        setStoredStreak(CURRENT_STREAK_KEY, currentStreak);
+        renderStrikeStatus();
+
+        return {
+            strikes,
+            title: STRIKE_TITLES[Math.min(strikes - 1, STRIKE_TITLES.length - 1)],
+            eliminated: strikes >= MAX_STRIKES
+        };
     }
 
     function shuffleArray(list) {
@@ -145,6 +281,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     function showView(targetView) {
         views.forEach(v => v.classList.remove('active'));
         targetView.classList.add('active');
+
+        if (targetView !== viewQuiz) {
+            clearQuestionTimer();
+            quizTimer.classList.add('hidden');
+            quizTimer.classList.remove('is-warning');
+            quizStrikeStatus.classList.add('hidden');
+        }
     }
 
     // LocalStorage-hjälpare
@@ -239,10 +382,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         btnNextQuestion.textContent = 'Nästa fråga';
     }
 
-    function showAnswerFeedback(explanation, isCorrect) {
+    function showAnswerFeedback(explanation, isCorrect, prefix = '') {
         quizFeedback.classList.remove('hidden');
         btnNextQuestion.textContent = currentIndex === currentQuestions.length - 1 ? 'Visa resultat' : 'Nästa fråga';
-        const statusText = isCorrect ? 'Rätt! ' : 'Fel! ';
+        const statusText = prefix || (isCorrect ? 'Rätt! ' : 'Fel! ');
         const explanationText = explanation && explanation.trim()
             ? explanation.trim()
             : 'Ingen förklaring tillgänglig ännu.';
@@ -251,6 +394,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function continueToNextQuestion() {
+        clearQuestionTimer();
         resetAnswerFeedback();
         currentIndex++;
 
@@ -276,7 +420,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Achievementlogik
-    function checkAchievements(scoreValue, maxStreakValue) {
+    function checkAchievements(scoreValue, maxStreakValue, roundContext = {}) {
         const existing = getStoredAchievements();
         const updated = [...existing];
 
@@ -295,6 +439,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 unlock(achievement.name);
             }
         });
+
+        const isPerfectTen = roundContext.correctAnswers === 10 && roundContext.totalQuestions === 10;
+        if (isPerfectTen && roundContext.difficulty) {
+            CHALLENGE_ACHIEVEMENTS
+                .filter(achievement => achievement.difficulty === roundContext.difficulty)
+                .forEach(achievement => unlock(achievement.name));
+        }
 
         const newlyUnlocked = updated.filter(a => !existing.includes(a));
         setStoredAchievements(updated);
@@ -367,7 +518,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const unlockedNames = getStoredAchievements();
         achievementsGrid.innerHTML = '';
 
-        ['Poäng', 'Streak'].forEach(categoryName => {
+        ACHIEVEMENT_CATEGORY_ORDER.forEach(categoryName => {
+            const achievementsInCategory = ALL_ACHIEVEMENTS.filter(ach => ach.category === categoryName);
+            if (achievementsInCategory.length === 0) {
+                return;
+            }
+
             const categorySection = document.createElement('section');
             categorySection.className = 'achievement-category';
 
@@ -378,7 +534,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const categoryGrid = document.createElement('div');
             categoryGrid.className = 'achievement-category-grid';
 
-            ALL_ACHIEVEMENTS.filter(ach => ach.category === categoryName).forEach(ach => {
+            achievementsInCategory.forEach(ach => {
                 const isUnlocked = unlockedNames.includes(ach.name);
                 const item = document.createElement('div');
                 item.className = `achievement-item ${isUnlocked ? 'unlocked' : ''}`;
@@ -419,6 +575,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Quizflöde
     function startQuiz() {
+        if (selectedRules.length === 0) {
+            syncRulesSelectionUI();
+            return;
+        }
+
+        clearQuestionTimer();
         const randomizedRules = shuffleArray(selectedRules);
         const all = [];
         randomizedRules.forEach(rule => {
@@ -439,7 +601,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         currentIndex = 0;
         correctCount = 0;
         roundScore = 0;
+        strikes = 0;
+        wasUtvisad = false;
+        questionResolved = false;
 
+        renderStrikeStatus();
+        updateTimerDisplay(EXPERT_TIME_LIMIT_SECONDS);
         updateScoreDisplay();
         updateBallPosition();
         showView(viewQuiz);
@@ -447,6 +614,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function renderCurrentQuestion() {
+        clearQuestionTimer();
+        questionResolved = false;
+
         const q = currentQuestions[currentIndex];
         quizProgress.textContent = `Fråga ${currentIndex + 1} av ${currentQuestions.length}`;
         quizQuestionText.textContent = `${formatRulesLabel(q.rules)}: ${q.question}`;
@@ -474,21 +644,35 @@ document.addEventListener('DOMContentLoaded', async () => {
             quizAnswers.appendChild(btn);
         });
 
-        questionStartTime = Date.now();
+        if (isExpertMode()) {
+            renderStrikeStatus();
+            startQuestionTimer();
+        } else {
+            quizTimer.classList.add('hidden');
+            quizStrikeStatus.classList.add('hidden');
+        }
+
     }
 
-    function handleAnswer(selectedIndex) {
+    function handleAnswer(selectedIndex, options = {}) {
+        if (questionResolved) {
+            return;
+        }
+
+        questionResolved = true;
+        clearQuestionTimer();
+
         const q = currentQuestions[currentIndex];
         const buttons = quizAnswers.querySelectorAll('button');
-        const timeTakenSec = (Date.now() - questionStartTime) / 1000;
+        const timedOut = options.timedOut === true;
 
         buttons.forEach((btn, i) => {
             if (i === pickedCorrectIndex) btn.classList.add('correct');
-            if (i === selectedIndex && i !== pickedCorrectIndex) btn.classList.add('wrong');
+            if (!timedOut && i === selectedIndex && i !== pickedCorrectIndex) btn.classList.add('wrong');
             btn.disabled = true;
         });
 
-        if (selectedIndex === pickedCorrectIndex) {
+        if (!timedOut && selectedIndex === pickedCorrectIndex) {
             correctCount++;
             currentStreak++;
             if (currentStreak > maxStreak) {
@@ -497,29 +681,58 @@ document.addEventListener('DOMContentLoaded', async () => {
             setStoredStreak(CURRENT_STREAK_KEY, currentStreak);
             setStoredStreak(MAX_STREAK_KEY, maxStreak);
 
-            let base = 10 * (difficultyMultiplier[selectedDifficulty] || 1);
-            if (timeTakenSec <= 5) base += 5;
-            const earnedPoints = Math.round(base);
+            const earnedPoints = Math.round(10 * (difficultyMultiplier[selectedDifficulty] || 1));
             roundScore += earnedPoints;
             addToTotalScore(earnedPoints);
+            updateScoreDisplay();
+            updateBallPosition();
+            showAnswerFeedback(q.explanation, true);
+            return;
+        }
+
+        if (isExpertMode()) {
+            const strikeInfo = addStrike();
+            updateScoreDisplay();
+            updateBallPosition();
+
+            if (strikeInfo.eliminated) {
+                wasUtvisad = true;
+                showResult();
+                return;
+            }
+
+            const strikeText = `${strikeInfo.title}! ${MAX_STRIKES - strikeInfo.strikes} försök kvar.`;
+            if (timedOut) {
+                showAnswerFeedback(`${strikeText} Tiden tog slut. ${q.explanation || ''}`.trim(), false, 'Timeout! ');
+            } else {
+                showAnswerFeedback(`${strikeText} ${q.explanation || ''}`.trim(), false, 'Fel! ');
+            }
         } else {
             currentStreak = 0;
             setStoredStreak(CURRENT_STREAK_KEY, currentStreak);
+            updateScoreDisplay();
+            updateBallPosition();
+            showAnswerFeedback(q.explanation, false);
         }
-
-        updateScoreDisplay();
-        updateBallPosition();
-        showAnswerFeedback(q.explanation, selectedIndex === pickedCorrectIndex);
     }
 
     function showResult() {
         updateBallPosition();
         const totalScore = getTotalScore();
 
-        const phrase = getResultPhrase(correctCount, currentQuestions.length);
-        resultSummary.textContent = `Du fick ${correctCount} av ${currentQuestions.length} rätt. ${phrase}!`;
+        if (isExpertMode() && wasUtvisad) {
+            const answered = Math.min(currentQuestions.length, correctCount + strikes);
+            resultSummary.textContent = `🟥Utvisning! Du fick ${correctCount} av ${answered} rätt innan domaren visade ut dig från spel.`;
+        } else {
+            const phrase = getResultPhrase(correctCount, currentQuestions.length);
+            resultSummary.textContent = `Du fick ${correctCount} av ${currentQuestions.length} rätt. ${phrase}!`;
+        }
 
-        const { newlyUnlocked } = checkAchievements(totalScore, maxStreak);
+        const { newlyUnlocked } = checkAchievements(totalScore, maxStreak, {
+            correctAnswers: correctCount,
+            totalQuestions: currentQuestions.length,
+            difficulty: selectedDifficulty
+        });
 
         if (newlyUnlocked.length > 0) {
             resultAchievementsBlock.classList.remove('hidden');
@@ -569,13 +782,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         btn.addEventListener('click', () => {
             const rules = btn.dataset.rules;
             if (selectedRules.includes(rules)) {
-                if (selectedRules.length === 1) return;
                 selectedRules = selectedRules.filter(r => r !== rules);
-                btn.classList.remove('active');
             } else {
                 selectedRules = [...selectedRules, rules];
-                btn.classList.add('active');
             }
+
+            syncRulesSelectionUI();
         });
     });
 
@@ -627,6 +839,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     renderStartMeta();
+    syncRulesSelectionUI();
     updateScoreDisplay();
     updateBallPosition();
 });

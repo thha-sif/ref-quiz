@@ -157,6 +157,22 @@ button {
     text-align: center;
 }
 
+.start-quiz-button:disabled {
+    background: #c7cfca;
+    color: #6b746f;
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.selection-help {
+    margin-top: 0.55rem;
+    margin-bottom: 0;
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+}
+
 .btn-secondary {
     background: #edf1ee;
     color: var(--color-text);
@@ -197,6 +213,45 @@ button {
     margin-bottom: 0.75rem;
     font-weight: 600;
     color: var(--color-primary-deep);
+}
+
+.quiz-status-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.quiz-timer,
+.quiz-strikes {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.22rem 0.55rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.82rem;
+    line-height: 1;
+    white-space: nowrap;
+    border: 1px solid transparent;
+}
+
+.quiz-timer {
+    background: #ecf7ef;
+    color: var(--color-primary-deep);
+    border-color: var(--color-primary-soft-border);
+    font-weight: 800;
+}
+
+.quiz-timer.is-warning {
+    background: #fff1f1;
+    color: var(--color-danger-text);
+    border-color: var(--color-danger-border);
+}
+
+.quiz-strikes {
+    background: #f7f1e7;
+    color: #77522b;
+    border-color: #dcc9a5;
+    font-weight: 700;
 }
 
 #quiz-question-container,
@@ -692,9 +747,9 @@ button {
 .achievement-item.unlocked::before {
     content: "Upplåst";
     position: absolute;
-    top: 0.45rem;
-    right: 0.45rem;
-    font-size: 0.68rem;
+    top: 0.2rem;
+    left: 50%;
+    font-size: 0.58rem;
     font-weight: 800;
     letter-spacing: 0.03em;
     text-transform: uppercase;
@@ -720,6 +775,11 @@ button {
     object-fit: contain;
     margin: 0 auto 0.55rem;
     display: block;
+}
+
+.achievement-item:not(.unlocked) .achievement-image {
+    filter: grayscale(1);
+    opacity: 0.4;
 }
 
 .achievement-lock {
@@ -782,6 +842,17 @@ button {
     .achievement-summary-status {
         font-size: 0.9rem;
         line-height: 1.2;
+    }
+
+    .quiz-status {
+        align-items: flex-start;
+        gap: 0.4rem;
+    }
+
+    .quiz-status-meta {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 0.35rem;
     }
 }
 
