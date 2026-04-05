@@ -8,7 +8,6 @@ Quizet fokuserar på spelformerna 5v5, 7v7, 9v9 och 11v11, med tre svårighetsgr
 - Slumpade quizomgångar med upp till 10 frågor
 - Val av en eller flera spelformer
 - Svårighetsnivåer: lätt, medel, svår
-- Poängsystem med tidsbonus för snabba svar
 - Streak-system (nuvarande och bästa streak sparas lokalt)
 - Framsteg för poäng och streak
 - Bildfrågor via `imgUrl` i frågebanken
@@ -61,7 +60,6 @@ Tips:
 ## Hur poäng fungerar
 
 - Korrekt svar ger grundpoäng baserat på svårighet.
-- Snabba svar (inom 5 sekunder) ger extra bonuspoäng.
 - Fel svar nollställer nuvarande streak.
 - Total poäng används för att låsa upp poängframsteg.
 

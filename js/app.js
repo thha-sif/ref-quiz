@@ -3,12 +3,21 @@
 let QUESTIONS = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
+    let startupLoadFailed = false;
+    let startupLoadErrorMessage = '';
+
     // Ladda frågor från CSV
     try {
         QUESTIONS = await loadQuestionsFromCSV("js/questions.csv");
+
+        if (!Array.isArray(QUESTIONS) || QUESTIONS.length === 0) {
+            throw new Error('questions.csv innehåller inga frågor.');
+        }
     } catch (e) {
         console.error("Kunde inte ladda questions.csv", e);
         QUESTIONS = [];
+        startupLoadFailed = true;
+        startupLoadErrorMessage = 'Kunde inte läsa in frågebanken. Kontrollera anslutning eller försök igen senare.';
     }
 
     // Elementreferenser
@@ -129,6 +138,71 @@ document.addEventListener('DOMContentLoaded', async () => {
     quizStatusMeta.appendChild(quizStrikeStatus);
     quizStatus.appendChild(quizStatusMeta);
 
+    function renderStartupError(message) {
+        const existingError = document.getElementById('startup-load-error');
+        if (existingError) {
+            existingError.textContent = message;
+            return;
+        }
+
+        const errorNotice = document.createElement('p');
+        errorNotice.id = 'startup-load-error';
+        errorNotice.className = 'quiz-feedback-explanation';
+        errorNotice.setAttribute('role', 'alert');
+        errorNotice.textContent = message;
+        viewStart.insertBefore(errorNotice, viewStart.firstElementChild);
+    }
+
+    function applyStartupErrorState() {
+        if (!startupLoadFailed) {
+            return;
+        }
+
+        renderStartupError(startupLoadErrorMessage);
+
+        rulesButtons.forEach(button => {
+            button.disabled = true;
+            button.setAttribute('aria-disabled', 'true');
+        });
+
+        diffButtons.forEach(button => {
+            button.disabled = true;
+            button.setAttribute('aria-disabled', 'true');
+        });
+
+        btnStartQuiz.disabled = true;
+        btnStartQuiz.title = startupLoadErrorMessage;
+
+        if (!rulesSelectionHelp) {
+            return;
+        }
+
+        rulesSelectionHelp.classList.remove('hidden');
+        rulesSelectionHelp.textContent = startupLoadErrorMessage;
+    }
+
+    function showStartNotice(message) {
+        const existing = document.getElementById('start-notice');
+        if (existing) {
+            existing.textContent = message;
+            return;
+        }
+
+        const notice = document.createElement('p');
+        notice.id = 'start-notice';
+        notice.className = 'quiz-feedback-explanation';
+        notice.setAttribute('role', 'alert');
+        notice.textContent = message;
+        btnStartQuiz.insertAdjacentElement('beforebegin', notice);
+    }
+
+    function clearStartNotice() {
+        const existing = document.getElementById('start-notice');
+        if (existing) {
+            existing.remove();
+        }
+    }
+
     function getAchievementImageSrc(achievement) {
         if (!achievement) return '';
 
@@ -211,14 +285,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         const hasRules = selectedRules.length > 0;
-        btnStartQuiz.disabled = !hasRules;
-        btnStartQuiz.title = hasRules ? '' : 'Välj minst en spelform för att starta quiz';
+        btnStartQuiz.disabled = !hasRules || startupLoadFailed;
+        if (startupLoadFailed) {
+            btnStartQuiz.title = startupLoadErrorMessage;
+        } else {
+            btnStartQuiz.title = hasRules ? '' : 'Välj minst en spelform för att starta quiz';
+        }
         rulesButtonsContainer.classList.toggle('is-empty', !hasRules);
 
         if (!rulesSelectionHelp) {
             return;
         }
 
+        if (startupLoadFailed) {
+            rulesSelectionHelp.classList.remove('hidden');
+            rulesSelectionHelp.textContent = startupLoadErrorMessage;
+            return;
+        }
+
+        clearStartNotice();
         rulesSelectionHelp.classList.toggle('hidden', hasRules);
         rulesSelectionHelp.textContent = 'Ingen spelform vald. Välj minst en för att kunna starta quiz.';
     }
@@ -291,13 +376,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // LocalStorage-hjälpare
+    const sessionStore = {};
+
+    function storageGet(key) {
+        try {
+            return localStorage.getItem(key);
+        } catch {
+            return Object.prototype.hasOwnProperty.call(sessionStore, key) ? sessionStore[key] : null;
+        }
+    }
+
+    function storageSet(key, value) {
+        try {
+            localStorage.setItem(key, value);
+            sessionStore[key] = value;
+        } catch {
+            sessionStore[key] = value;
+        }
+    }
+
     function getTotalScore() {
-        const val = localStorage.getItem(TOTAL_SCORE_KEY);
+        const val = storageGet(TOTAL_SCORE_KEY);
         return val ? Number(val) : 0;
     }
 
     function setTotalScore(totalScore) {
-        localStorage.setItem(TOTAL_SCORE_KEY, String(Math.max(0, Math.floor(totalScore))));
+        storageSet(TOTAL_SCORE_KEY, String(Math.max(0, Math.floor(totalScore))));
     }
 
     function addToTotalScore(pointsToAdd) {
@@ -307,7 +411,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function getStoredAchievements() {
-        const val = localStorage.getItem(ACHIEVEMENTS_KEY);
+        const val = storageGet(ACHIEVEMENTS_KEY);
         if (!val) return [];
         try {
             const parsed = JSON.parse(val);
@@ -318,11 +422,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function setStoredAchievements(list) {
-        localStorage.setItem(ACHIEVEMENTS_KEY, JSON.stringify(list));
+        storageSet(ACHIEVEMENTS_KEY, JSON.stringify(list));
     }
 
     function getStoredStreak(key) {
-        const val = localStorage.getItem(key);
+        const val = storageGet(key);
         const parsed = Number(val);
         if (!Number.isFinite(parsed) || parsed < 0) return 0;
         return Math.floor(parsed);
@@ -330,7 +434,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function setStoredStreak(key, value) {
         const safeValue = Math.max(0, Math.floor(value));
-        localStorage.setItem(key, String(safeValue));
+        storageSet(key, String(safeValue));
     }
 
     function pickRandomPhrase(phrases) {
@@ -410,11 +514,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         roundScore = 0;
         currentStreak = 0;
         maxStreak = 0;
-        localStorage.setItem(TOTAL_SCORE_KEY, '0');
+        storageSet(TOTAL_SCORE_KEY, '0');
         setStoredAchievements([]);
         setStoredStreak(CURRENT_STREAK_KEY, currentStreak);
         setStoredStreak(MAX_STREAK_KEY, maxStreak);
-        updateScoreDisplay();
         updateBallPosition();
         renderStartMeta();
     }
@@ -454,9 +557,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // UI-uppdateringar
-    function updateScoreDisplay() {
-    }
-
     function getScoreProgressState() {
         const progressScore = getTotalScore();
         const nextAchievement = SCORE_ACHIEVEMENTS.find(achievement => progressScore < achievement.threshold);
@@ -575,6 +675,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Quizflöde
     function startQuiz() {
+        if (startupLoadFailed) {
+            applyStartupErrorState();
+            return;
+        }
+
         if (selectedRules.length === 0) {
             syncRulesSelectionUI();
             return;
@@ -592,7 +697,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         if (all.length === 0) {
-            alert('Inga frågor finns för denna kombination ännu.');
+            showStartNotice('Inga frågor finns för den valda kombinationen ännu.');
             return;
         }
 
@@ -607,8 +712,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         renderStrikeStatus();
         updateTimerDisplay(EXPERT_TIME_LIMIT_SECONDS);
-        updateScoreDisplay();
         updateBallPosition();
+        clearStartNotice();
         showView(viewQuiz);
         renderCurrentQuestion();
     }
@@ -684,7 +789,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const earnedPoints = Math.round(10 * (difficultyMultiplier[selectedDifficulty] || 1));
             roundScore += earnedPoints;
             addToTotalScore(earnedPoints);
-            updateScoreDisplay();
             updateBallPosition();
             showAnswerFeedback(q.explanation, true);
             return;
@@ -692,7 +796,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (isExpertMode()) {
             const strikeInfo = addStrike();
-            updateScoreDisplay();
             updateBallPosition();
 
             if (strikeInfo.eliminated) {
@@ -710,7 +813,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else {
             currentStreak = 0;
             setStoredStreak(CURRENT_STREAK_KEY, currentStreak);
-            updateScoreDisplay();
             updateBallPosition();
             showAnswerFeedback(q.explanation, false);
         }
@@ -796,6 +898,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             diffButtons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             selectedDifficulty = btn.dataset.diff;
+            clearStartNotice();
         });
     });
 
@@ -840,6 +943,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     renderStartMeta();
     syncRulesSelectionUI();
-    updateScoreDisplay();
+    applyStartupErrorState();
     updateBallPosition();
 });
