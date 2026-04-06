@@ -108,10 +108,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         { name: 'Pålitlig', criteria: 'Uppnå 25 i streak', category: 'Streak', threshold: 25 },
         { name: 'Ofelbar', criteria: 'Uppnå 50 i streak', category: 'Streak', threshold: 50 },
         { name: 'Legendarisk', criteria: 'Uppnå 100 i streak', category: 'Streak', threshold: 100 },
-        { name: 'Nykomling', criteria: 'Få alla rätt på Lätt svårighet', category: 'Utmaning', difficulty: 'easy' },
-        { name: 'Utmanare', criteria: 'Få alla rätt på Medel svårighet', category: 'Utmaning', difficulty: 'medium' },
-        { name: 'Proffs', criteria: 'Få alla rätt på Svår svårighet', category: 'Utmaning', difficulty: 'hard' },
-        { name: 'Expert', criteria: 'Få alla rätt på Expert svårighet', category: 'Utmaning', difficulty: 'expert' }
+        { name: 'Nykomling', criteria: 'Få 10/10 rätt på ett quiz "Lätt"', category: 'Utmaning', difficulty: 'easy' },
+        { name: 'Utmanare', criteria: 'Få 10/10 rätt på ett quiz "Medel"', category: 'Utmaning', difficulty: 'medium' },
+        { name: 'Proffs', criteria: 'Få 10/10 rätt på ett quiz "Svår"', category: 'Utmaning', difficulty: 'hard' },
+        { name: 'Expert', criteria: 'Få 10/10 rätt på ett quiz "Expert"', category: 'Utmaning', difficulty: 'expert' }
     ];
     const SCORE_ACHIEVEMENTS = ALL_ACHIEVEMENTS
         .filter(achievement => achievement.category === 'Poäng')

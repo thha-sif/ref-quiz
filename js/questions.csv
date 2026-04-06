@@ -7,6 +7,7 @@ q-11v11-005;11v11;easy;text;Vad händer om en spelare får två gula kort i samm
 q-11v11-006;11v11;hard;text;När är en spelare inte offside trots position?;;När spelaren står still;När spelaren är på egen planhalva;När spelaren får bollen via nick;När spelaren inte rör bollen;När spelaren är ensam med målvakten;1;Offside gäller inte på egen planhalva.
 q-11v11-007;11v11;medium;text;Vad döms om bollen passerar kortlinjen via försvarande lag?;;Inspark;Inkast;Hörna;Nedsläpp;Frispark;2;Hörna döms när försvarare rör bollen sist.
 q-11v11-008;11v11;hard;text;Hur stort ska målet vara i 11 mot 11?;;3 x 1,5 meter;5 x 2 meter;6 x 2,20 meter;7,32 x 2,44 meter;5,5 x 2 meter;3;Målet ska vara 7,32 x 2,44 meter.
+q-11v11-009;11v11;medium;text;Får spelaren flytta hörnmarkeringen vid hörna?;;Ja;Nej;Bara om den är i vägen;Bara om domaren tillåter;;1;Det är inte tillåtet att flytta hörnmarkeringen (flagga, kon eller motsvarande).;
 q-5v5-001;5v5;hard;text;Är det tillåtet att driva med bollen direkt från avspark i 5 mot 5?;;Ja, men inte direkt mot mål;Nej;Om domaren säger att det är okej;Ja, man får driva hur man vill;Bara om man ligger under;0;I 5 mot 5 tillåts spelare att driva med bollen så länge det inte görs mot mål.
 q-5v5-002;5v5;medium;text;Är det tillåtet att göra mål direkt på frispark?;;Nej;Ja;Bara om man petar till en medspelare;Ja, men bara från egen planhalva;Bara om man ligger under;0;I 5 mot 5 är det inte tillåtet att göra mål på frispark. Om det sker ska frisparken tas om.
 q-5v5-003;5v5;easy;text;Får målvakten plocka upp en hemåtpassning med händerna?;;Ja;Nej;Endast om bollen studsar;Endast om domaren tillåter;Endast utanför straffområdet;0;Hemåtpass får  tas med händerna i spelformen 5 mot 5.
@@ -14,12 +15,13 @@ q-5v5-004;5v5;medium;text;Hur startas spelet efter att bollen passerat kortlinje
 q-5v5-005;5v5;hard;text;Vilket av följande leder till indirekt frispark i 5 mot 5?;;Farligt spel;Hands;Bollen passerar sidlinjen;Domaren påverkar spelet;Målvakten tar en hemåtpass med händerna;0;Farligt spel ger indirekt frispark.
 q-5v5-006;5v5;easy;text;Hur återupptas spelet när bollen går över sidlinjen i 5 mot 5?;;Inkast;Sidlinjespark;Nedsläpp;Hörna;Indirekt frispark;1;Sidlinjespark används när bollen passerar sidlinjen i spelformen 5 mot 5.
 q-5v5-007;5v5;medium;text;Får målvakten sparka utspark över halva planen i 5 mot 5?;;Ja;Nej;Endast efter räddning;Endast om bollen studsar;Endast vid målvaktens boll;1;I 5 mot 5 gäller ofta restriktioner för att främja speluppbyggnad.
-q-5v5-008;5v5;hard;text;Vad händer om en spelare gör en  hög spark nära motståndare i 5 mot 5?;;Indirekt frispark;Direkt frispark;Straffspark;Inkast;Nedsläpp;0;Farligt spel utan kontakt ger indirekt frispark.
+q-5v5-008;5v5;hard;text;Vad händer om en spelare gör en hög spark nära motståndare i 5 mot 5?;;Indirekt frispark;Direkt frispark;Straffspark;;;0;Farligt spel utan kontakt ger indirekt frispark.
 q-5v5-009;5v5;hard;text;Vad döms om en spelare spelar bollen med huvudet vid en hörna i 5 mot 5?;;Ingen åtgärd;Indirekt frispark;Direkt frispark;Straffspark;Offside;0;Även om nickar inte uppmuntras i 5 mot 5 innebär det ingen åtgärd att spela med huvudet.
 q-5v5-010;5v5;hard;text;Hur stort ska målet vara i 5 mot 5?;;3 x 1,5 meter;5 x 2 meter;6 x 2,20 meter;7,32 x 2,44 meter;5,5 x 2 meter;0;Målet ska vara 3 meter x 1,5 meter.
-q-7v7-001;7v7;easy;text;Finns offside i 7 mot 7?;;Ja;Nej;Endast vid fasta situationer;Endast vid utspark;Endast i straffområdet;1;Offsideregeln gäller inte i spelformen 7 mot 7.
+q-5v5-011;5v5;medium;text;Vilken bollstorlek ska användas i 5 mot 5?;;Storlek 3;Storlek 5;Storlek 4;;;0;Bollstorlek 3 ska användas.
+q-7v7-001;7v7;easy;text;Finns offside i 7 mot 7?;;Ja;Nej;Endast vid fasta situationer;;Endast i straffområdet;1;Offsideregeln tillämpas inte i spelformen 7 mot 7.
 q-7v7-002;7v7;medium;text;Hur långt ska avståndet vara till närmaste motståndare vid en frispark?;;5 meter;7 meter;8 meter;9 meter;10 meter;1;Regelavståndet är 7 meter.
-q-7v7-003;7v7;hard;text;När används utspark i 7 mot 7?;;Alltid;Aldrig;När bollen passerar kortlinjen efter räddning;När målvakten tar upp bollen efter en räddning;Vid offside;1;I spelformen 7 mot 7 används målvaktsinkast i stället för utspark.
+q-7v7-003;7v7;hard;text;När används utspark i 7 mot 7?;;Alltid;Aldrig;När bollen passerar kortlinjen efter räddning;När målvakten tar upp bollen efter en räddning;Vid offside;1;I spelformen 7 mot 7 ska målvaktsutkast användas.
 q-7v7-004;7v7;easy;text;Hur många spelare per lag är på planen i 7 mot 7?;;5 utespelare och målvakt;6 utespelare och målvakt;7 utespelare och målvakt;4 utespelare och målvakt;8 utespelare och målvakt;1;7 spelare per lag deltar i spelformen, därav namnet.
 q-7v7-005;7v7;medium;text;Vad blir beslutet om målvakten tar upp en avsiktlig hemåtpass med händerna i 7 mot 7?;;Indirekt frispark;Direkt frispark;Straffspark;Nedsläpp;Inget beslut, spelet går vidare;0;Regeln gäller i alla spelformer utom 5 mot 5.
 q-7v7-006;7v7;easy;text;När döms straff i 7 mot 7?;;Vid regelbrott precis utanför straffområdet;Vid regelbrott inom straffområdet;Endast vid hands;Endast vid fällning;Endast vid målchansutvisning;1;Straff döms vid regelbrott i straffområdet.
@@ -31,10 +33,13 @@ q-7v7-011;7v7;hard;text;Vilken åtgärd gäller om målvakten tar emot en hemåt
 q-7v7-012;7v7;easy;text;Vad blir domslutet om bollen går över sidlinjen i 7 mot 7?;;Inspark;Inkast;Hörna;Nedsläpp;Frispark;1;Inkast döms när bollen går över sidlinjen.
 q-7v7-013;7v7;hard;text;Hur stort ska målet vara i 7 mot 7?;;3 x 1,5 meter;5 x 2 meter;6 x 2,20 meter;7,32 x 2,44 meter;5,5 x 2 meter;1;Målet ska vara 5 meter x 2 meter.
 q-7v7-014;7v7;hard;text;Hur lång är planen i 7 mot 7?;;80-90 meter;65-72 meter;90–105 meter;50-55 meter;60–80 meter;3;Enligt reglerna ska planen vara 50-55 meter lång.
+q-7v7-015;7v7;hard;text;Vad döms om en försvarare i eget straffområde får bollen på handen när hen skyddar ansiktet?;;Ingen åtgärd;Indirekt frispark;Straffspark;;;2;Eftersom spelaren har händerna i en onaturlig position döms straffspark.
+q-7v7-016;7v7;hard;text;Vad ska dömas om en indirekt frispark skjuts direkt i mål i 7 mot 7?;;Frisparken slås om;Målvaktsutkast;Mål följt av avspark;Indirekt frispark till motståndarlaget;Hörna;1;Det är inte tillåtet att skjuta en indirekt frispark direkt i mål.
+q-7v7-017;7v7;medium;text;Får spelaren flytta hörnmarkeringen vid hörna?;;Ja;Nej;Bara om den är i vägen;Bara om domaren tillåter;;1;Det är inte tillåtet att flytta hörnmarkeringen (flagga, kon eller motsvarande).;
 q-9v9-001;9v9;easy;text;Vilket av följande är korrekt om spelarnas utrustning?;;Benskydd är frivilligt;Benskydd är obligatoriskt;Endast målvakt behöver benskydd;Endast utespelare behöver benskydd;Benskydd används bara när man spelar i shorts;1;Benskydd är alltid obligatoriskt.
 q-9v9-002;9v9;hard;text;Hur lång är planen i 9 mot 9?;;80-90 meter;65-72 meter;90–105 meter;50-55 meter;60–80 meter;1;Enligt reglerna ska planen vara 65-72 meter lång.
 q-9v9-003;9v9;hard;text;Vad gäller vid tillbakapass till målvakt i 9 mot 9?;;Målvakten får alltid ta med händerna;Målvakten får aldrig ta med händerna;Målvakten får bara ta med händerna om bollens riktning ändras;Målvakten får ta med händerna om passningen sker med annan kroppsdel än foten;Målvakten får ta med händerna om passningen sker efter inkast från medspelare;3;Avsiktlig hemåtpass med foten får inte tas med händerna.
-q-9v9-004;9v9;easy;text;Hur många spelare är på planen per lag i 9 mot 9?;;9 utespelare och målvakt;7 utespelare och målvakt;8 utespelare och målvakt;10 utespelare och målvakt;6 utespelare och målvakt;2;9 spelare per lag deltar i spelformen, därav namnet.
+q-9v9-004;9v9;easy;text;Hur många spelare är på planen per lag i 9 mot 9?;;9 utespelare och målvakt;7 utespelare och målvakt;8 utespelare och målvakt;;6 utespelare och målvakt;2;9 spelare per lag deltar i spelformen, därav namnet.
 q-9v9-005;9v9;hard;text;Vad händer om bollen spelas direkt i mål på inkast i 9 mot 9?;;Mål döms;Inspark;Hörna;Nedsläpp;Frispark;1;Det blir inspark om bollen går direkt i mål. Alltså kan man inte göra mål direkt på inkast.
 q-9v9-006;9v9;easy;text;Vilket avstånd till närmaste motståndare gäller vid hörna i 9 mot 9?;;5 meter;7 meter;9 meter;10 meter;3 meter;2;Spelare ska hålla minst 9 meters avstånd.
 q-9v9-007;9v9;easy;text;Hur startas andra halvlek i 9 mot 9?;;Inkast;Hörna;Avspark;Nedsläpp;Frispark;2;Halvlekar startas alltid med avspark i alla spelformer.
@@ -42,7 +47,9 @@ q-9v9-008;9v9;easy;text;Vad blir domslutet om bollen går över sidlinjen i 9 mo
 q-9v9-009;9v9;hard;text;Hur stort ska målet vara i 9 mot 9?;;3 x 1,5 meter;5 x 2 meter;6 x 2,20 meter;7,32 x 2,44 meter;5,5 x 2 meter;2;Målet ska vara 6 meter x 2,20 meter.
 q-9v9-010;9v9;easy;text;Hur långt ut från mållinjen ska straffområdet vara i 9 mot 9?;;7 meter;8 meter;9 meter;10 meter;11 meter;2;Straffområdet ska vara nio meter framåt i planen.
 q-9v9-011;9v9;medium;text;Är det tillåtet för spelarna att bära smycken?;;Endast halsband;Endast ringar;Ja;Endast örhängen;Nej;4;Grundregeln är att alla typer av smycken är förbjudna och måste tas bort.
-q-9v9-012;9v9;expert;text;Går det att svara rätt på den här frågan?;;Ja;Nej;Kanske;Test;Vet ej;2
-q-9v9-013;9v9;expert;text;Går det att svara rätt på den här frågan?;;Ja;Nej;Kanske;Test;Vet ej;2
-q-9v9-014;9v9;expert;text;Går det att svara rätt på den här frågan?;;Ja;Nej;Kanske;Test;Vet ej;2
-q-all-001;all;easy;text;Hur startas en match i fotboll?;;Inkast;Inspark;Avspark;Frispark;Nedsläpp;2;Matchen startar med avspark i samtliga spelformer.
+q-7v7-012;9v9;medium;text;Får spelaren flytta hörnmarkeringen vid hörna?;;Ja;Nej;Bara om den är i vägen;Bara om domaren tillåter;;1;Det är inte tillåtet att flytta hörnmarkeringen (flagga, kon eller motsvarande).;
+q-all-001;all;easy;text;Hur startas en match i fotboll?;;Nedsläpp;Inspark;Avspark;;;2;Matchen startar med avspark i samtliga spelformer.
+q-all-002;all;hard;text;Får en spelare spela med hårt gips på en hand?;;Bara om domaren tillåter det;Ja;Nej;Om spelaren har tillåtelse av läkare;;2;Endast skyddsutrustning som inte är farlig och tillverkad av stoppat lättviktsmaterial är tillåten.
+q-all-003;all;hard;text;Måste domaren blåsa en signal vid avspark?;;Nej;Bara vid avspark efter mål;Ja;Bara vid avspark när en halvlek startar;;2;Domaren måste alltid blåsa en signal vid avspark.
+q-all-004;all;expert;text;Vilken regel gäller för hörnspark?;;Regel 13;Regel 15;Regel 17;Regel 12;Regel 16;2;Regel 17: Hörnspark
+q-all-005;all;expert;text;Vilken regel gäller för frispark?;;Regel 13;Regel 15;Regel 17;Regel 11;Regel 10;0;Regel 13: Frispark
