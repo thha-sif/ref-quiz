@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     const EXPERT_DIFFICULTY = 'expert';
-    const EXPERT_TIME_LIMIT_SECONDS = 6;
+    const EXPERT_TIME_LIMIT_SECONDS = 7;
     const MAX_STRIKES = 3;
     const STRIKE_TITLES = ['🤚Tillsägelse', '🟨Varning', '🟥Utvisning'];
 
@@ -228,7 +228,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             '5v5': '5 mot 5',
             '7v7': '7 mot 7',
             '9v9': '9 mot 9',
-            '11v11': '11 mot 11'
+            '11v11': '11 mot 11',
+            'all': 'Alla spelformer'
         };
         return labels[rules] || rules;
     }
@@ -258,7 +259,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         quizTimer.classList.remove('hidden');
         quizTimer.textContent = `Tid: ${secondsLeft}s`;
-        quizTimer.classList.toggle('is-warning', secondsLeft <= 2);
+        quizTimer.classList.toggle('is-warning', secondsLeft <= 3);
     }
 
     function renderStrikeStatus() {
@@ -449,34 +450,42 @@ document.addEventListener('DOMContentLoaded', async () => {
             return pickRandomPhrase([
                 'Plugga reglerna lite till',
                 'Ta en snabb regelrepetition och kör igen',
-                'Bra försök, men här finns mer att lära'
+                'Här finns mer att lära',
+                'Fortsätt nöta grunderna så lossnar det snart',
+                'Det här var en tuff runda, men du bygger erfarenhet'
             ]);
         }
         if (ratio < 0.6) {
             return pickRandomPhrase([
                 'Du är på god väg, fortsätt träna',
                 'Stabil grund, men du kan vässa detaljerna',
-                'Bra jobbat, en till runda så sitter det bättre'
+                'Bra jobbat, en till runda så sitter det bättre',
+                'Du har koll på mycket, nu är det detaljerna kvar'
             ]);
         }
         if (ratio < 0.85) {
             return pickRandomPhrase([
-                'Riktigt bra jobbat',
+                'Bra jobbat, du är på god väg',
                 'Snygg nivå, du har bra koll',
-                'Mycket stark insats'
+                'Stabil domarinsats, det märks att du tränat',
+                'Bra flyt genom rundan, fortsätt så'
             ]);
         }
         if (ratio < 1) {
             return pickRandomPhrase([
                 'Grymt jobbat, nästan full pott',
                 'Imponerande, du är riktigt nära max',
-                'Stark domarform idag'
+                'Stark domarform idag',
+                'Mycket nära perfektion, en liten puts kvar',
+                'Topprunda, du var bara ett steg från fullträff'
             ]);
         }
         return pickRandomPhrase([
             'Perfekt runda, full pott',
             'Klockrent, du satte allt',
-            'Otroligt, helt felfritt'
+            'Otroligt, helt felfritt',
+            'Hög klass rakt igenom, inget att anmärka på',
+            'En sån här runda kan du vara riktigt stolt över'
         ]);
     }
 
@@ -686,14 +695,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         clearQuestionTimer();
-        const randomizedRules = shuffleArray(selectedRules);
-        const all = [];
-        randomizedRules.forEach(rule => {
-            QUESTIONS.forEach(q => {
-                if (q.rules === rule && q.difficulty === selectedDifficulty) {
-                    all.push(q);
-                }
-            });
+        const all = QUESTIONS.filter(q => {
+            const isMatchingDifficulty = selectedDifficulty === EXPERT_DIFFICULTY
+                ? q.difficulty === 'hard' || q.difficulty === EXPERT_DIFFICULTY
+                : q.difficulty === selectedDifficulty;
+
+            if (!isMatchingDifficulty) {
+                return false;
+            }
+
+            return q.rules === 'all' || selectedRules.includes(q.rules);
         });
 
         if (all.length === 0) {

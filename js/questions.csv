@@ -2,7 +2,7 @@
 q-11v11-001;11v11;easy;text;Vilket bestraffning gäller normalt vid osportsligt uppträdande?;;Ingen bestraffning;Varning;Utvisning;Grönt kort;Frispark;1;Osportsligt uppträdande ger varning.
 q-11v11-002;11v11;medium;text;Hur återupptas spelet om domaren avbryter matchen för skada utan regelbrott?;;Inkast;Frispark;Nedsläpp;Hörna;Inspark;2;Nedsläpp används vid avbrott utan regelbrott.
 q-11v11-003;11v11;hard;text;Vilket alternativ beskriver korrekt hur offside bedöms?;;Spelare döms alltid offside om denne är närmast mål;Spelare döms offside om denne deltar aktiv i spelet;Offside gäller endast i straffområdet;Offside gäller inte vid frispark;En målvakt kan aldrig vara offside;1;Offside kräver aktiv inverkan.
-q-11v11-004;11v11;easy;text;Hur startas matchen i 11 mot 11?;;Inkast;Hörna;Avspark;Frispark;Nedsläpp;2;Matchen startar med avspark i samtliga spelformer.
+q-11v11-004;11v11;easy;text;Hur många spelare per lag är på planen i 11 mot 11?;;11 utespelare och målvakt;10 utespelare och målvakt;9 utespelare och målvakt;11 utespelare och 2 målvakter;20 utespelare och 2 målvakter;1;11 spelare per lag deltar i spelformen, därav namnet.
 q-11v11-005;11v11;easy;text;Vad händer om en spelare får två gula kort i samma match?;;Inget händer;Spelaren varnas igen;Spelaren utvisas;Matchen avbryts;Frispark;2;2 gula kort leder till rött kort, d.v.s utvisning.
 q-11v11-006;11v11;hard;text;När är en spelare inte offside trots position?;;När spelaren står still;När spelaren är på egen planhalva;När spelaren får bollen via nick;När spelaren inte rör bollen;När spelaren är ensam med målvakten;1;Offside gäller inte på egen planhalva.
 q-11v11-007;11v11;medium;text;Vad döms om bollen passerar kortlinjen via försvarande lag?;;Inspark;Inkast;Hörna;Nedsläpp;Frispark;2;Hörna döms när försvarare rör bollen sist.
@@ -24,7 +24,7 @@ q-7v7-004;7v7;easy;text;Hur många spelare per lag är på planen i 7 mot 7?;;5 
 q-7v7-005;7v7;medium;text;Vad blir beslutet om målvakten tar upp en avsiktlig hemåtpass med händerna i 7 mot 7?;;Indirekt frispark;Direkt frispark;Straffspark;Nedsläpp;Inget beslut, spelet går vidare;0;Regeln gäller i alla spelformer utom 5 mot 5.
 q-7v7-006;7v7;easy;text;När döms straff i 7 mot 7?;;Vid regelbrott precis utanför straffområdet;Vid regelbrott inom straffområdet;Endast vid hands;Endast vid fällning;Endast vid målchansutvisning;1;Straff döms vid regelbrott i straffområdet.
 q-7v7-007;7v7;easy;text;Hur startas spelet efter mål i 7 mot 7?;;Hörna;Inkast;Avspark;Nedsläpp;Inspark;2;Spelet startas med avspark efter mål.
-q-7v7-008;7v7;easy;text;Vad händer om bollen passerar kortlinjen efter att anfallande lag rört den sist?;;Hörna;Målvaktsutkast;Inspark;Straffspark;Nedsläpp;2;Försvarande lags målvakt ska sätta igång spelet igen genom att rulla eller kasta bollen.
+q-7v7-008;7v7;medium;text;Vad händer om bollen passerar kortlinjen efter att anfallande lag rört den sist?;;Hörna;Målvaktsutkast;Inspark;Straffspark;Nedsläpp;2;Försvarande lags målvakt ska sätta igång spelet igen genom att rulla eller kasta bollen.
 q-7v7-009;7v7;medium;text;När ska en spelare dömas för en offside i 7 mot 7?;;När bollen spelas i riktning mot mål;När spelaren är bakom försvararen vid passningen;När spelaren är närmast målvakten;När bollen spelas av motståndare;Offside förekommer inte i 7 mot 7;4;Offside tillämpas inte i spelformen 7 mot 7.
 q-7v7-010;7v7;medium;text;Vilken regel gäller vid en avsiktlig fällning på mittplan i 7 mot 7?;;Indirekt frispark;Direkt frispark;Straffspark;Nedsläpp;Ingen åtgärd;1;Avsiktlig fällning på mittplan döms som direkt frispark.
 q-7v7-011;7v7;hard;text;Vilken åtgärd gäller om målvakten tar emot en hemåtpassning med händerna i 7 mot 7?;;Indirekt frispark;Direkt frispark;Straffspark;Hörna;Nedsläpp;0;Hemåtpassning som tas med händerna ger indirekt frispark i alla spelformer utom 5 mot 5.
@@ -45,3 +45,4 @@ q-9v9-011;9v9;medium;text;Är det tillåtet för spelarna att bära smycken?;;En
 q-9v9-012;9v9;expert;text;Går det att svara rätt på den här frågan?;;Ja;Nej;Kanske;Test;Vet ej;2
 q-9v9-013;9v9;expert;text;Går det att svara rätt på den här frågan?;;Ja;Nej;Kanske;Test;Vet ej;2
 q-9v9-014;9v9;expert;text;Går det att svara rätt på den här frågan?;;Ja;Nej;Kanske;Test;Vet ej;2
+q-all-001;all;easy;text;Hur startas en match i fotboll?;;Inkast;Inspark;Avspark;Frispark;Nedsläpp;2;Matchen startar med avspark i samtliga spelformer.

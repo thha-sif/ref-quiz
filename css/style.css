@@ -56,6 +56,32 @@ body {
     padding: 0.8rem;
 }
 
+.app-footer a {
+    display: inline-block;
+    margin-top: 0.35rem;
+    padding: 0;
+    border-radius: 0;
+    border: none;
+    background: none;
+    color: #e8f7ec;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: color 0.2s ease, text-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.app-footer a:hover {
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
+    opacity: 1;
+}
+
+.app-footer a:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
+}
+
 .app-header h1 {
     margin: 0;
     font-size: 2rem;
