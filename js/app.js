@@ -81,8 +81,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const difficultyMultiplier = {
         'easy': 0.8,
         'medium': 1,
-        'hard': 1.5,
-        'expert': 2
+        'hard': 1.2,
+        'expert': 1.5
     };
 
     const EXPERT_DIFFICULTY = 'expert';
