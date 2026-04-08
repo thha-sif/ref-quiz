@@ -207,7 +207,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!achievement) return '';
 
         if (achievement.category === 'Utmaning') {
-            return 'images/ball.png';
+            const difficultyImageMap = {
+                easy: 'images/achievements/easy.png',
+                medium: 'images/achievements/medium.png',
+                hard: 'images/achievements/hard.png',
+                expert: 'images/achievements/expert.png'
+            };
+
+            return difficultyImageMap[achievement.difficulty] || 'images/ball.png';
         }
 
         const collection = achievement.category === 'Poäng'
