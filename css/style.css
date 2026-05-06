@@ -353,10 +353,13 @@ button {
 
 /* Bildfrågor */
 .question-image {
-    max-width: 100%;
+    width: auto;
+    max-width: min(100%, 520px);
+    max-height: 320px;
     height: auto;
-    margin: 1rem 0;
+    margin: 1rem auto;
     display: block;
+    object-fit: contain;
 }
 
 .hidden {

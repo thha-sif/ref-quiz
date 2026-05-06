@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const EXPERT_DIFFICULTY = 'expert';
     const EXPERT_TIME_LIMIT_SECONDS = 7;
     const MAX_STRIKES = 3;
+    const RULE_IMAGE_BASE_PATH = 'images/rules/';
     const STRIKE_TITLES = ['🤚Tillsägelse', '🟨Varning', '🟥Utvisning'];
 
     const TOTAL_SCORE_KEY = 'refquiz_totalScore';
@@ -228,6 +229,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const prefix = achievement.category === 'Poäng' ? 'level' : 'streak';
         return `images/achievements/${prefix}${index + 1}.png`;
+    }
+
+    function getRuleImageSrc(imgUrl) {
+        if (!imgUrl) return '';
+
+        const trimmedUrl = imgUrl.trim();
+        const hasPath = trimmedUrl.includes('/') || trimmedUrl.includes('\\') || /^[a-z][a-z\d+.-]*:/i.test(trimmedUrl);
+
+        return hasPath ? trimmedUrl : `${RULE_IMAGE_BASE_PATH}${trimmedUrl}`;
     }
 
     function formatRulesLabel(rules) {
@@ -745,8 +755,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         quizQuestionText.textContent = `${formatRulesLabel(q.rules)}: ${q.question}`;
         resetAnswerFeedback();
 
-        if (q.type === 'img' && q.imgUrl) {
-            quizQuestionImage.src = q.imgUrl;
+        if ((q.type === 'img' || q.type === 'imgUrl') && q.imgUrl) {
+            quizQuestionImage.src = getRuleImageSrc(q.imgUrl);
             quizQuestionImage.classList.remove('hidden');
         } else {
             quizQuestionImage.classList.add('hidden');
