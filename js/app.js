@@ -102,9 +102,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         { name: 'Erfaren domare', criteria: 'Uppnå 500 poäng', category: 'Poäng', threshold: 500 },
         { name: 'Linjedomare', criteria: 'Uppnå 1000 poäng', category: 'Poäng', threshold: 1000 },
         { name: 'Assisterande domare', criteria: 'Uppnå 1500 poäng', category: 'Poäng', threshold: 1500 },
-        { name: 'Huvuddomare', criteria: 'Uppnå 2000 poäng', category: 'Poäng', threshold: 2000 },
-        { name: 'UEFA-domare', criteria: 'Uppnå 3000 poäng', category: 'Poäng', threshold: 3000 },
-        { name: 'FIFA-domare', criteria: 'Uppnå 5000 poäng', category: 'Poäng', threshold: 5000 },
+        { name: 'Huvuddomare', criteria: 'Uppnå 2500 poäng', category: 'Poäng', threshold: 2500 },
+        { name: 'UEFA-domare', criteria: 'Uppnå 4000 poäng', category: 'Poäng', threshold: 4000 },
+        { name: 'FIFA-domare', criteria: 'Uppnå 6000 poäng', category: 'Poäng', threshold: 6000 },
         { name: 'Stabil', criteria: 'Uppnå 10 i streak', category: 'Streak', threshold: 10 },
         { name: 'Pålitlig', criteria: 'Uppnå 25 i streak', category: 'Streak', threshold: 25 },
         { name: 'Ofelbar', criteria: 'Uppnå 50 i streak', category: 'Streak', threshold: 50 },
@@ -484,7 +484,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return pickRandomPhrase([
                 'Bra jobbat, du är på god väg',
                 'Snygg nivå, du har bra koll',
-                'Stabil domarinsats, det märks att du tränat',
+                'Stabil insats, det märks att du tränat',
                 'Bra flyt genom rundan, fortsätt så'
             ]);
         }
@@ -492,7 +492,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return pickRandomPhrase([
                 'Grymt jobbat, nästan full pott',
                 'Imponerande, du är riktigt nära max',
-                'Stark domarform idag',
+                'Stark form idag',
                 'Mycket nära perfektion, en liten puts kvar',
                 'Topprunda, du var bara ett steg från fullträff'
             ]);
