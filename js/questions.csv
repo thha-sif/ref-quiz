@@ -35,7 +35,7 @@ q-5v5-014;5v5;easy;text;Behöver lagen byta sida i varje period?;;Ja;Nej;;;;1;La
 q-5v5-015;5v5;medium;text;Är det tillåtet att använda sarg i spelformen 5 mot 5?;;Nej;Bara för 8-åringar;Bara för 9-åringar;Ja;;3;Det är tillåtet. När sarg används måste den vara i lämpligt material och inte vara farlig för spelarna.
 q-5v5-016;5v5;hard;text;Är det tillåtet att spela i byxor?;;Ja;Nej;Bara om det är minusgrader;;;0;Det är tillåtet att spela i byxor i spelformen 5 mot 5.
 q-5v5-017;5v5;easy;text;När ska ett motståndarlag backa till retreatlinjen?;;Vid hörna;Vid inkast;Vid frispark;Vid målvaktsutkast;Vid straffspark;3;Vid målvaktsutkast ska motståndarna backa till retreatlinjen.
-q-5v5-018;5v5;easy;text;Kan målvakten välja att starta spelet innan motståndarna är bakom retreatlinjen?;;Ja;Nej;;;;0;Står en motståndare på fel sida om retreatlinjen kan anfallande lag välja att starta spelet ändå.
+q-5v5-018;5v5;easy;text;Kan målvakten välja att starta spelet innan motståndarna är bakom retreatlinjen?;;Ja;Nej;;;;0;Står en motståndare på fel sida om retreatlinjen kan anfallande lag välja att starta spelet ändå.
 q-5v5-019;5v5;easy;text;Tillämpas straffspark i spelformen 5 mot 5?;;Ja;Nej;Bara vid cupspel;;;1;Straffspark tillämpas inte i spelformen 5 mot 5.
 q-5v5-020;5v5;medium;text;Vad blir åtgärden om målvakten tar upp bollen med händerna långt ifrån målet?;;Nedsläpp;Frispark;Avspark;;;1;Frispark till motståndarlaget.
 q-5v5-021;5v5;hard;text;Hur många spelare måste ett lag minst ha för att matchen ska fortsätta?;;5 spelare;3 spelare;4 spelare;2 spelare;;2;En match kan inte börja eller fortsätta om något av lagen har färre än fyra spelare.
@@ -52,7 +52,7 @@ q-7v7-010;7v7;medium;text;Vilken regel gäller vid en avsiktlig fällning på mi
 q-7v7-011;7v7;hard;text;Vilken åtgärd gäller om målvakten tar emot en hemåtpassning med händerna i 7 mot 7?;;Indirekt frispark;Direkt frispark;Straffspark;Hörna;Nedsläpp;0;Hemåtpassning som tas med händerna ger indirekt frispark i alla spelformer utom 5 mot 5.
 q-7v7-012;7v7;easy;text;Vad blir domslutet om bollen går över sidlinjen i 7 mot 7?;;Inspark;Inkast;Hörna;Nedsläpp;Frispark;1;Inkast döms när bollen går över sidlinjen.
 q-7v7-013;7v7;hard;text;Hur stort ska målet vara i 7 mot 7?;;3 x 1,5 meter;5 x 2 meter;6 x 2,20 meter;7,32 x 2,44 meter;5,5 x 2 meter;1;Målet ska vara 5 meter x 2 meter.
-q-7v7-014;7v7;hard;text;Hur lång är planen i 7 mot 7?;;80-90 meter;65-72 meter;90–105 meter;50-55 meter;60–80 meter;3;Enligt reglerna ska planen vara 50-55 meter lång.
+q-7v7-014;7v7;hard;text;Hur lång är planen i 7 mot 7?;;80-90 meter;65-72 meter;90-105 meter;50-55 meter;60-80 meter;3;Enligt reglerna ska planen vara 50-55 meter lång.
 q-7v7-015;7v7;hard;text;Vad döms om en försvarare i eget straffområde får bollen på handen när hen skyddar ansiktet?;;Ingen åtgärd;Indirekt frispark;Straffspark;;;2;Eftersom spelaren har händerna i en onaturlig position döms straffspark.
 q-7v7-016;7v7;hard;text;Vad ska dömas om en indirekt frispark skjuts direkt i mål i 7 mot 7?;;Frisparken slås om;Målvaktsutkast;Mål följt av avspark;Indirekt frispark till motståndarlaget;Hörna;1;Det är inte tillåtet att skjuta en indirekt frispark direkt i mål.
 q-7v7-017;7v7;medium;text;Får spelaren flytta hörnmarkeringen vid hörna?;;Ja;Nej;Bara om den är i vägen;Bara om domaren tillåter;;1;Det är inte tillåtet att flytta hörnmarkeringen (flagga, kon eller motsvarande).
@@ -69,10 +69,10 @@ q-7v7-027;7v7;hard;text;Hur lång är speltiden maximalt vid sammandrag (flera m
 q-7v7-028;7v7;medium;text;Behöver lagen byta sida i varje period?;;Ja;Nej;;;;1;Lagen behöver inte byta sida.
 q-7v7-029;7v7;hard;text;Är det tillåtet att spela i byxor?;;Ja;Nej;Bara om det är minusgrader;;;0;Det är tillåtet att spela i byxor i spelformen 7 mot 7.
 q-7v7-030;7v7;easy;text;När ska ett motståndarlag backa till retreatlinjen?;;Vid hörna;Vid inkast;Vid frispark;Vid målvaktsutkast;Vid straffspark;3;Vid målvaktsutkast ska motståndarna backa till retreatlinjen.
-q-7v7-031;7v7;easy;text;Kan målvakten välja att starta spelet innan motståndarna är bakom retreatlinjen?;;Ja;Nej;;;;0;Står en motståndare på fel sida om retreatlinjen kan anfallande lag välja att starta spelet ändå.
+q-7v7-031;7v7;easy;text;Kan målvakten välja att starta spelet innan motståndarna är bakom retreatlinjen?;;Ja;Nej;;;;0;Står en motståndare på fel sida om retreatlinjen kan anfallande lag välja att starta spelet ändå.
 q-7v7-032;7v7;hard;text;Hur många spelare måste ett lag minst ha för att matchen ska fortsätta?;;5 spelare;6 spelare;4 spelare;7 spelare;;0;En match kan inte börja eller fortsätta om något av lagen har färre än fem spelare.
 q-9v9-001;9v9;easy;text;Vilket av följande är korrekt om spelarnas utrustning?;;Benskydd är frivilligt;Benskydd är obligatoriskt;Endast målvakt behöver benskydd;Endast utespelare behöver benskydd;Benskydd används bara när man spelar i shorts;1;Benskydd är alltid obligatoriskt.
-q-9v9-002;9v9;hard;text;Hur lång är planen i 9 mot 9?;;80-90 meter;65-72 meter;90–105 meter;50-55 meter;60–80 meter;1;Enligt reglerna ska planen vara 65-72 meter lång.
+q-9v9-002;9v9;hard;text;Hur lång är planen i 9 mot 9?;;80-90 meter;65-72 meter;90-105 meter;50-55 meter;60-80 meter;1;Enligt reglerna ska planen vara 65-72 meter lång.
 q-9v9-003;9v9;hard;text;Vad gäller vid tillbakapass till målvakt i 9 mot 9?;;Målvakten får alltid ta med händerna;Målvakten får aldrig ta med händerna;Målvakten får bara ta med händerna om bollens riktning ändras;Målvakten får ta med händerna om passningen sker med annan kroppsdel än foten;Målvakten får ta med händerna om passningen sker efter inkast från medspelare;3;Avsiktlig hemåtpass med foten får inte tas med händerna.
 q-9v9-004;9v9;easy;text;Hur många spelare är på planen per lag i 9 mot 9?;;9 utespelare och målvakt;7 utespelare och målvakt;8 utespelare och målvakt;;6 utespelare och målvakt;2;9 spelare per lag deltar i spelformen, därav namnet.
 q-9v9-005;9v9;hard;text;Vad händer om bollen spelas direkt i motståndarens mål på inkast?;;Mål döms;Inspark;Hörna;Nedsläpp;Frispark;1;Det blir inspark om bollen går direkt i mål. Alltså kan man inte göra mål direkt på inkast.

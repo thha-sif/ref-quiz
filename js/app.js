@@ -109,10 +109,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         { name: 'Pålitlig', criteria: 'Uppnå 25 i streak', category: 'Streak', threshold: 25 },
         { name: 'Ofelbar', criteria: 'Uppnå 50 i streak', category: 'Streak', threshold: 50 },
         { name: 'Legendarisk', criteria: 'Uppnå 100 i streak', category: 'Streak', threshold: 100 },
-        { name: 'Nykomling', criteria: 'Få 10/10 rätt på ett quiz "Lätt"', category: 'Utmaning', difficulty: 'easy' },
-        { name: 'Utmanare', criteria: 'Få 10/10 rätt på ett quiz "Medel"', category: 'Utmaning', difficulty: 'medium' },
-        { name: 'Proffs', criteria: 'Få 10/10 rätt på ett quiz "Svår"', category: 'Utmaning', difficulty: 'hard' },
-        { name: 'Expert', criteria: 'Få 10/10 rätt på ett quiz "Expert"', category: 'Utmaning', difficulty: 'expert' }
+        { name: 'Nykomling', criteria: 'Få alla rätt på ett quiz "Lätt"', category: 'Utmaning', difficulty: 'easy' },
+        { name: 'Utmanare', criteria: 'Få alla rätt på ett quiz "Medel"', category: 'Utmaning', difficulty: 'medium' },
+        { name: 'Proffs', criteria: 'Få alla rätt på ett quiz "Svår"', category: 'Utmaning', difficulty: 'hard' },
+        { name: 'Expert', criteria: 'Få alla rätt på ett quiz "Expert"', category: 'Utmaning', difficulty: 'expert' }
     ];
     const SCORE_ACHIEVEMENTS = ALL_ACHIEVEMENTS
         .filter(achievement => achievement.category === 'Poäng')
@@ -514,7 +514,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function showAnswerFeedback(explanation, isCorrect, prefix = '') {
         quizFeedback.classList.remove('hidden');
-        btnNextQuestion.textContent = currentIndex === currentQuestions.length - 1 ? 'Visa resultat' : 'Nästa fråga';
+        const isLastStep = wasUtvisad || currentIndex === currentQuestions.length - 1;
+        btnNextQuestion.textContent = isLastStep ? 'Visa resultat' : 'Nästa fråga';
         const statusText = prefix || (isCorrect ? 'Rätt! ' : 'Fel! ');
         const explanationText = explanation && explanation.trim()
             ? explanation.trim()
@@ -528,7 +529,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         resetAnswerFeedback();
         currentIndex++;
 
-        if (currentIndex < currentQuestions.length) {
+        if (!wasUtvisad && currentIndex < currentQuestions.length) {
             renderCurrentQuestion();
             return;
         }
@@ -548,7 +549,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderStartMeta();
     }
 
-    // Achievementlogik
     function checkAchievements(scoreValue, maxStreakValue, roundContext = {}) {
         const existing = getStoredAchievements();
         const updated = [...existing];
@@ -569,8 +569,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
 
-        const isPerfectTen = roundContext.correctAnswers === 10 && roundContext.totalQuestions === 10;
-        if (isPerfectTen && roundContext.difficulty) {
+        const isPerfectRound = roundContext.totalQuestions > 0
+            && roundContext.correctAnswers === roundContext.totalQuestions;
+        if (isPerfectRound && roundContext.difficulty) {
             CHALLENGE_ACHIEVEMENTS
                 .filter(achievement => achievement.difficulty === roundContext.difficulty)
                 .forEach(achievement => unlock(achievement.name));
@@ -826,13 +827,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             const strikeInfo = addStrike();
             updateBallPosition();
 
-            if (strikeInfo.eliminated) {
-                wasUtvisad = true;
-                showResult();
-                return;
-            }
+            wasUtvisad = strikeInfo.eliminated;
 
-            const strikeText = `${strikeInfo.title}! ${MAX_STRIKES - strikeInfo.strikes} försök kvar.`;
+            const strikeText = wasUtvisad
+                ? `${strikeInfo.title}!`
+                : `${strikeInfo.title}! ${MAX_STRIKES - strikeInfo.strikes} försök kvar.`;
             if (timedOut) {
                 showAnswerFeedback(`${strikeText} Tiden tog slut. ${q.explanation || ''}`.trim(), false, 'Timeout! ');
             } else {
